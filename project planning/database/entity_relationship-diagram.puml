@@ -1,0 +1,35 @@
+@startuml
+
+'entity attributes
+entity Switch {
+    * switchID : int <<PK>>
+    --
+    * switchLocation : String
+    * switchIp : String
+    * switchName : String
+}
+
+entity Prod_Device {
+    * prodDeviceID : int <<PK>>
+    --
+    * devicePort : String
+    * deviceNagiosID : String
+    * deviceMac : String
+    deviceLlocation
+    * switchID : int <<FK>>
+}
+
+entity Store_Device {
+    * storeDeviceID : int <<PK>>
+    --
+    * devicePort : String
+    * deviceCategory : String
+    deviceLlocation
+}
+
+'realations
+Switch ||--o{ Prod_Device
+
+Switch ||--o{ Store_Device
+
+@enduml
