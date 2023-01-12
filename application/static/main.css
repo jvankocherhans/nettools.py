@@ -1,0 +1,34 @@
+:root {
+    --smoky-black: #111111;
+    --black-coral: #5B676F;
+    --cadet-rey: #8B97A0;
+    --celadon-blue: #107DAC;
+    --maximum-bue: #5CABC7;
+}  
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Courier New', Courier, monospace;
+}
+
+body {
+	width: 100%;
+    height: 100%;
+	margin: 0;
+	float: none;
+	background: #fff url(none);
+}
+
+header {
+    background-color: var(--smoky-black);
+}
+
+header .title {
+    
+}
+
+header .title h1 {
+    color: white;
+}
