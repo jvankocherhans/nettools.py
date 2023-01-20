@@ -1,12 +1,22 @@
 import mac_reboot_algorithm
 import data_collecter
 
-input = "host01"
-
-# print(data_collecter.getValue(input, "deviceMac"))
-
+# object instances
 switch = mac_reboot_algorithm.NetworkSwitch()
+database = data_collecter.DatabaseConection()
 
-switch.updateCiscoSwitch("192.168.19.8")
+input = "host05"
 
-print(switch.getIp())
+mac = database.getValue(input, "deviceMac")
+ip = database.getValue(input, "switchIp")
+port = database.getValue(input, "devicePort")
+
+if(switch.searchMacOnPort(ip, mac, port)):
+    switch.restartDevice()
+else:
+    switch.searchMacOnNet(mac)
+
+switch.restartDevice()
+
+if(mac_reboot_algorithm.isAlive(database.getValue(input, "deviceIp"))):
+         print("success")

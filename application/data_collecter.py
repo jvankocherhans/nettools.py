@@ -1,25 +1,36 @@
 import sqlite3
 
-# member variables
-mDBName = "poe-reboot.db"
-mTableName = "device"
+class DatabaseConection(object):
 
-mDBAttributesDict = {
-    "deviceNagiosName" : "lidl_deviceNagiosName",
-    "deviceIp" : "lidl_deviceIp",
-    "deviceMac" : "lidl_deviceMac",
-    "deviceLocation" : "lidl_deviceLocation",
-    "devicePort" : "lidl_devicePort",
-    "switchNagiosName" : "lidl_switchNagiosName",
-    "switchIp" : "lidl_switchIp"
-}
+    __instance = None
 
-# initialize db connection and create cursor
-mConn = sqlite3.connect(mDBName)
-mCursor = mConn.cursor()
+    mDBName = "poe-reboot.db"
+    mTableName = "device"
 
-def getValue(deviceNagiosName, attribute):
-    mCursor.execute(f"select {mDBAttributesDict[attribute]} from {mTableName} where {mDBAttributesDict['deviceNagiosName']} = '{deviceNagiosName}';")
-    return mCursor.fetchone()[0]
+    mDBAttributesDict = {
+        "deviceNagiosName" : "lidl_deviceNagiosName",
+        "deviceIp" : "lidl_deviceIp",
+        "deviceMac" : "lidl_deviceMac",
+        "deviceLocation" : "lidl_deviceLocation",
+        "devicePort" : "lidl_devicePort",
+        "switchNagiosName" : "lidl_switchNagiosName",
+        "switchIp" : "lidl_switchIp"
+    }
 
-# mConn.close()
+    mConn = sqlite3.connect(mDBName)
+    mCursor = mConn.cursor()
+    
+    def __new__(cls):
+        if (cls.__instance is None):
+            cls.__instance = super(DatabaseConection, cls).__new__(cls)
+            cls.mCursor = cls.mConn.cursor()
+            cls.__instance.__intialized = False
+        return cls.__instance
+        
+    def getValue(self, deviceNagiosName, attribute):
+        self.mCursor.execute(f"select {self.mDBAttributesDict[attribute]} from {self.mTableName} where {self.mDBAttributesDict['deviceNagiosName']} = '{deviceNagiosName}';")
+        return self.mCursor.fetchone()[0]
+    
+    def closeConn(self):
+        self.mConn.close()
+        
