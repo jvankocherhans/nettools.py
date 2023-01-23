@@ -14,48 +14,58 @@ class NetworkSwitch:
     }
 
     # target attributes
-    tSwitch = None
+    tSwitchIp = None
+    tSwitchName = None
     tPort = None
 
-    def updateCiscoSwitch(self,ip):
-        self.mCiscoSwitch.update({"ip":f"{ip}"})
+    def updateCiscoSwitch(self):
+        self.mCiscoSwitch.update({"ip":f"{self.tSwitchIp}"})
         self.mConn = netmiko.ConnectHandler(**self.mCiscoSwitch)
 
     def searchMacOnPort(self, ip, mac, port):
         if(self.mCiscoSwitch["ip"] != ip):
-            self.updateCiscoSwitch(ip)
+            self.tSwitchIp = ip
+            self.updateCiscoSwitch()
 
-        output = self.mConn.send_command(f"show mac address-table interface {port} | include {mac}")
+        mac_output = self.mConn.send_command(f"show mac address-table interface {port} | include {mac}")
         
-        if(len(output) > 0):
+        if(len(mac_output) > 0):
 
-            if(output.split()[1] == mac):
-                self.tSwitch = ip
+            if(mac_output.split()[1] == mac):
+                self.tSwitchName = self.getHostname()
                 self.tPort = port
                 return True
         
         return False
     
-    def searchMacOnNet(self, mac):
+    def searchMacOnNet(self, ip, mac):
         loop = True
+
+        if(self.mCiscoSwitch["ip"] != ip):
+            self.tSwitchIp = ip
+            self.updateCiscoSwitch()
+
         while(loop):
             mac_output = self.mConn.send_command(f"show mac address-table | inc {mac}")
             if(len(mac_output) > 0):
+                self.tPort = mac_output.split()[3]
                 if(mac_output != None):
-                    print("yaa...")
-                    cdp_output = self.mConn.send_command(f"show cdp neighbors {mac_output.split()[3]} | include Gig")
-                    if(mac_output.split()[3] == ("".join(cdp_output.split()[0:2])).replace("g","")):
-                        cdp_output = self.mConn.send_command(f"show cdp neighbors {mac_output.split()[3]} detail | include IP")
-                        print(cdp_output)
-                        self.updateCiscoSwitch(cdp_output.splitlines()[0].split()[2])
+                    cdp_output = self.mConn.send_command(f"show cdp neighbors {self.tPort} | inc Gig")
+                    if(self.tPort == ("".join(cdp_output.split()[0:2])).replace("g","")):
+                        cdp_output = self.mConn.send_command(f"show cdp neighbors {self.tPort} detail | inc IP")
+                        self.tSwitchIp = cdp_output.splitlines()[0].split()[2]
+                        self.updateCiscoSwitch()
                     else:
-                        print("YAAAAAA!!!")
-                        print(("".join(cdp_output.split()[0:2])).replace("g",""))
-                        print(mac_output.split()[3])
-                        self.tPort = mac_output.split()[3]
+                        self.tSwitchName = self.getHostname()
                         loop = False
+                        return True
             else:
                 loop = False
+                return False
+            
+    def getHostname(self):
+        hostname_output = self.mConn.send_command("show running-config | inc hostname")
+        return hostname_output.split()[1]
 
     def restartDevice(self):
         self.mConn.send_config_set([f"int {self.tPort}", "shut"])
@@ -64,6 +74,7 @@ class NetworkSwitch:
 
 def isAlive(ip):
     for i in range(15):
+        time.sleep(2)
         if(os.system(f"ping -c 1 {ip} > /dev/null") == 0):
             return True
     return False

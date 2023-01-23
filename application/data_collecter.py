@@ -31,6 +31,11 @@ class DatabaseConection(object):
         self.mCursor.execute(f"select {self.mDBAttributesDict[attribute]} from {self.mTableName} where {self.mDBAttributesDict['deviceNagiosName']} = '{deviceNagiosName}';")
         return self.mCursor.fetchone()[0]
     
+    def updateValue(self, deviceNagiosName, devicePort, switchNagiosName, switchIp):
+        self.mCursor.execute(f"update {self.mTableName} set {self.mDBAttributesDict['devicePort']} = '{devicePort}', {self.mDBAttributesDict['switchNagiosName']} = '{switchNagiosName}', {self.mDBAttributesDict['switchIp']} = '{switchIp}' where {self.mDBAttributesDict['deviceNagiosName']} = '{deviceNagiosName}';")
+        self.mConn.commit()
+
+    
     def closeConn(self):
         self.mConn.close()
         
