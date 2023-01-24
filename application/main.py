@@ -5,7 +5,7 @@ import data_collecter
 switch = mac_reboot_algorithm.NetworkSwitch()
 database = data_collecter.DatabaseConection()
 
-input = "host02"
+input = "host03"
 
 mac = database.getValue(input, "deviceMac")
 ip = database.getValue(input, "switchIp")
