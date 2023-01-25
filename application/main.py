@@ -3,9 +3,10 @@ import data_collecter
 
 # object instances
 switch = mac_reboot_algorithm.NetworkSwitch()
+switch2 = mac_reboot_algorithm.NetworkSwitch()
 database = data_collecter.DatabaseConection()
 
-input = "host03"
+input = "host01"
 
 mac = database.getValue(input, "deviceMac")
 ip = database.getValue(input, "switchIp")
@@ -16,15 +17,6 @@ if(switch.searchMacOnPort(ip, mac, port) or switch.searchMacOnNet(ip, mac)):
 else:
     switch.tPort = port
     switch.tSwitch = ip
-
-switch.restartDevice()
-
-
-
-
-       
-    
-
 
 switch.restartDevice()
 

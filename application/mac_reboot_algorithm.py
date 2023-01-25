@@ -3,8 +3,10 @@ import netmiko
 import os
 
 class NetworkSwitch:
+    # member variables
     mCiscoSwitch = None
     mConn = None
+    mProcessInfo = None
 
     mCiscoSwitch = {
         "ip": "",
@@ -20,8 +22,12 @@ class NetworkSwitch:
 
     def updateCiscoSwitch(self):
         self.mCiscoSwitch.update({"ip":f"{self.tSwitchIp}"})
-        self.mConn = netmiko.ConnectHandler(**self.mCiscoSwitch)
-
+        try:
+            self.mConn = netmiko.ConnectHandler(**self.mCiscoSwitch)
+            self.mProcessInfo = f"connected to switch {self.getHostname()}-{self.tSwitchIp}"
+            print(self.mProcessInfo)
+        except:
+            print(f"couldn't connect to: {self.tSwitchName}:{self.tSwitchIp}")
     def searchMacOnPort(self, ip, mac, port):
         if(self.mCiscoSwitch["ip"] != ip):
             self.tSwitchIp = ip
@@ -34,6 +40,8 @@ class NetworkSwitch:
             if(mac_output.split()[1] == mac):
                 self.tSwitchName = self.getHostname()
                 self.tPort = port
+                self.mProcessInfo =  f"found device on: {self.tSwitchName }-{self.tSwitchIp}:{self.tPort}!"
+                print(self.mProcessInfo)
                 return True
         
         return False
@@ -54,13 +62,17 @@ class NetworkSwitch:
                     if(self.tPort == ("".join(cdp_output.split()[0:2])).replace("g","")):
                         cdp_output = self.mConn.send_command(f"show cdp neighbors {self.tPort} detail | inc IP")
                         self.tSwitchIp = cdp_output.splitlines()[0].split()[2]
+                        self.mProcessInfo = f"moving to switch: {self.tSwitchIp}..."
+                        print(self.mProcessInfo)
                         self.updateCiscoSwitch()
                     else:
                         self.tSwitchName = self.getHostname()
                         loop = False
+                        self.mProcessInfo = f"device found on {self.getHostname()}-{self.tSwitchIp}:{self.tPort}!"
                         return True
             else:
                 loop = False
+                self.mProcessInfo(f"couldn't find device")
                 return False
             
     def getHostname(self):
@@ -71,6 +83,8 @@ class NetworkSwitch:
         self.mConn.send_config_set([f"int {self.tPort}", "shut"])
         time.sleep(2)
         self.mConn.send_config_set([f"int {self.tPort}", "no shut"])
+        self.mProcessInfo = f"restarting {self.tSwitchName}-{self.tSwitchIp}:{self.tPort}"
+        print(self.mProcessInfo)
 
 def isAlive(ip):
     for i in range(15):
