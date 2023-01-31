@@ -1,6 +1,88 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block title %}<title>poe-reboot</title>{%
+endblock title %} {% block content %}
 <div id="content_poe-reboot">
-    <h1>poe-reboot</h1>
+  <!-- restart buttons etc -->
+  <div class="main">
+    <div class="execution">
+      <form method="POST">
+        <select name="location" id="location">
+          <option value="HQ">HQ</option>
+          <option value="WH005">WH005</option>
+          <option value="WH006">WH006</option>
+          <option value="WH099">WH099</option>
+        </select>
+
+        <select name="devices" id="devices">
+          
+        </select>
+
+        <input type="submit" value="reboot">
+      </form>
+    </div
+  </div>
+  <!-- processbar -->
+  <div id="process_bar">
+    <i class="process_bar_toggle">^</i>
+    <table class="process_table">
+      <tr class="process_item_title">
+        <th>id</th>
+        <th>device</th>
+        <th>status</th>
+        <th>loading</th>
+      </tr>
+      {% for reboot_process in reboot_process_list %}
+      <tr class="process_item">
+        <td>1</td>
+        <td>host01</td>
+        <td>status</td>
+        <td class="process_progressbar"><div class="loader"></div></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 </div>
-{% endblock content %}
+{% endblock content %} {% block script %}
+<script src="{{ url_for('static', filename='poe-reboot.js') }}"></script>
+
+<script>
+
+  var array = [];
+
+  
+    "{% for device in devices %}"
+      array.push(["{{ device[0] }}, {{ device[1] }}"])
+    "{% endfor %}"
+
+    selectList = document.getElementById("devices");
+
+
+    window.onload = function() {
+    
+      for (var i = 0; i < array.length; i++) {
+    
+      if(array[i][0].split(",")[1].includes(document.getElementById("location").value)) {
+        var option = document.createElement("option");
+        option.value = array[i][0].split(",")[0];
+        option.text = array[i][0].split(",")[0];
+        selectList.appendChild(option);
+      }
+  }   
+    }
+
+    document.getElementById("location").onchange = function() {
+
+    document.getElementById("devices").innerHTML = "";
+
+    for (var i = 0; i < array.length; i++) {
+    
+    if(array[i][0].split(",")[1].includes(document.getElementById("location").value)) {
+      var option = document.createElement("option");
+      option.value = array[i][0].split(",")[0];
+      option.text = array[i][0].split(",")[0];
+      selectList.appendChild(option);
+    }
+  }   
+    }
+
+  </script>
+{% endblock script %}

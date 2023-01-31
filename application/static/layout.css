@@ -202,12 +202,12 @@ header .image-text .type {
   left: 250px;
   height: 100vh;
   width: calc(100% - 250px);
-  background-color: var(--body-color);
+  background-color: var(--white);
   transition: var(--tran-05);
 }
 
 .sidebar.close ~ .content {
-  left: 78px;
+  left: 88px;
   height: 100vh;
-  width: calc(100% - 78px);
+  width: calc(100% - 88px);
 }

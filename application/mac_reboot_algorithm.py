@@ -72,7 +72,7 @@ class NetworkSwitch:
                         return True
             else:
                 loop = False
-                self.mProcessInfo(f"couldn't find device")
+                self.mProcessInfo = f"couldn't find device"
                 return False
             
     def getHostname(self):

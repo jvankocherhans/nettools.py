@@ -1,0 +1,143 @@
+:root {
+  /* ===== Colors ===== */
+  --smoky-black: #111111;
+  --black-coral: #5b676f;
+  --cadet-grey: #8b97a0;
+  --celadon-blue: #58889c;
+  --maximum-bue: #5cabc7;
+  --white: #ffffff;
+  --black: #000000;
+
+  /* ====== Transition ====== */
+  --tran-03: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.3s ease;
+  --tran-05: all 0.3s ease;
+}
+
+* {
+    color: var(--white);
+}
+
+#content_poe-reboot {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.main {
+  height: 100%;
+  width: 100%;
+  transition: var(--tran-05);
+}
+
+.main .execution {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.main .execution form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.main .execution form select {
+  margin-bottom: 10px;
+  padding: 5px;
+  color: white;
+  background-color: var(--black-coral);
+  width: 40%;
+  height: 5%;
+  border-radius: 10px;
+  border-color: rgba(255, 255, 255, 0);
+}
+
+.main .execution form input {
+  background-color: var(--black-coral);
+  width: 28%;
+  height: 5%;
+  border-radius: 10px;
+  border-color: rgba(255, 255, 255, 0);
+}
+
+.main .execution form input:hover {
+  background-color: var(--cadet-grey);
+}
+
+#process_bar {
+  width: 100%;
+  background-color: rgba(143, 140, 140, 0.445);
+  transform: translateY(-30px);
+  transition: var(--tran-05);
+  overflow: hidden;
+  padding: 0 0;
+}
+
+#process_bar .process_bar_toggle {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  transition: var(--tran-05);
+  font-size: larger;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+#process_bar.open {
+  transform: translateY(-100%);
+  background-color: #5b676fc7;
+}
+#process_bar.open .process_bar_toggle {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+#process_bar .process_table {
+    margin-top: 35px;
+    width: 100%;
+}
+
+#process_bar .process_item td {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#process_bar .process_item {
+    text-align: center;
+    
+}
+
+#process_bar .process_item .process_progressbar{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+}
+
+.loader {
+  border: 1px solid var(--white);
+  border-radius: 50%;
+  border-top: 1px solid var(--maximum-bue);
+  width: 15px;
+  height: 15px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

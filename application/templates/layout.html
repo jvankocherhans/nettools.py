@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- stylesheets -->
-    <link rel="stylesheet" href="{{ url_for("static", filename="layout.css") }}"
-    <link rel="stylesheet" href="{{ url_for("static", filename="default-content-layout.css") }}"
-    <link rel="stylesheet" href="{{ url_for("static", filename="poe-reboot-layout.css") }}"
-    />
-    <!-- title -->
-    <title>/</title>
+  <!-- stylesheets -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='default-content-layout.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='poe-reboot-layout.css') }}"/>
+  {% block title %}{% endblock %}
   </head>
   <body>
     <nav class="sidebar close">
@@ -68,5 +66,6 @@
     </section>
   </body>
 
-  <script src="{{ url_for("static", filename="sidebar.js") }}"></script>
+  <script src="{{ url_for('static', filename='sidebar.js') }}"></script>
+  {% block script %}{% endblock %}
 </html>

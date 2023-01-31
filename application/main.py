@@ -12,6 +12,7 @@ mac = database.getValue(input, "deviceMac")
 ip = database.getValue(input, "switchIp")
 port = database.getValue(input, "devicePort")
 
+
 if(switch.searchMacOnPort(ip, mac, port) or switch.searchMacOnNet(ip, mac)):
        database.updateValue(input, switch.tPort, switch.tSwitchName, switch.tSwitchIp)
 else:

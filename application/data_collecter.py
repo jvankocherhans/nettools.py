@@ -17,7 +17,7 @@ class DatabaseConection(object):
         "switchIp" : "lidl_switchIp"
     }
 
-    mConn = sqlite3.connect(mDBName)
+    mConn = sqlite3.connect(mDBName, check_same_thread=False)
     mCursor = mConn.cursor()
     
     def __new__(cls):
@@ -31,10 +31,13 @@ class DatabaseConection(object):
         self.mCursor.execute(f"select {self.mDBAttributesDict[attribute]} from {self.mTableName} where {self.mDBAttributesDict['deviceNagiosName']} = '{deviceNagiosName}';")
         return self.mCursor.fetchone()[0]
     
+    def getValues(self, attribute):
+        self.mCursor.execute(f"select {self.mDBAttributesDict[attribute]}, {self.mDBAttributesDict['deviceLocation']} from {self.mTableName};")
+        return self.mCursor.fetchall()
+
     def updateValue(self, deviceNagiosName, devicePort, switchNagiosName, switchIp):
         self.mCursor.execute(f"update {self.mTableName} set {self.mDBAttributesDict['devicePort']} = '{devicePort}', {self.mDBAttributesDict['switchNagiosName']} = '{switchNagiosName}', {self.mDBAttributesDict['switchIp']} = '{switchIp}' where {self.mDBAttributesDict['deviceNagiosName']} = '{deviceNagiosName}';")
         self.mConn.commit()
-
     
     def closeConn(self):
         self.mConn.close()
