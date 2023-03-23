@@ -1,0 +1,179 @@
+:root {
+  /* ===== Colors ===== */
+  --smoky-black: #111111;
+  --black-coral: #5b676f;
+  --cadet-grey: #8b97a0;
+  --celadon-blue: #58889c;
+  --maximum-bue: #5cabc7;
+  --white: #ffffff;
+  --black: #000000;
+
+  /* ====== Transition ====== */
+  --tran-03: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.3s ease;
+  --tran-05: all 0.3s ease;
+}
+
+body {
+  background-color: #9f9da7;
+  font-size: 1.6rem;
+  font-family: "Open Sans", sans-serif;
+  color: #2b3e51;
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+}
+
+h2 {
+  font-weight: 300;
+  text-align: center;
+}
+
+p {
+  position: relative;
+}
+
+a,
+a:link,
+a:visited,
+a:active {
+  color: var(--black-coral);
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+a:focus,
+a:hover,
+a:link:focus,
+a:link:hover,
+a:visited:focus,
+a:visited:hover,
+a:active:focus,
+a:active:hover {
+  color: var(--black-coral);
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+#login-form-wrap {
+  background-color: #fff;
+  width: 35%;
+  margin: 30px auto;
+  text-align: center;
+  padding: 20px 0 0 0;
+  border-radius: 4px;
+  box-shadow: 0px 30px 50px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+#login-form {
+  padding: 0 60px;
+}
+
+input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 4px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0 0 0 10px;
+  margin: 0;
+  color: #8a8b8e;
+  border: 1px solid #c2c0ca;
+  font-style: normal;
+  font-size: 16px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  background: none;
+}
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #3ca9e2;
+}
+input[type="text"]:focus:invalid,
+input[type="password"]:focus:invalid {
+  color: #cc1e2b;
+  border-color: #cc1e2b;
+}
+input[type="text"]:valid ~ .validation,
+input[type="password"]:valid ~ .validation {
+  display: block;
+  border-color: #0c0;
+}
+input[type="text"]:valid ~ .validation span,
+input[type="password"]:valid ~ .validation span {
+  background: #0c0;
+  position: absolute;
+  border-radius: 6px;
+}
+input[type="text"]:valid ~ .validation span:first-child,
+input[type="password"]:valid ~ .validation span:first-child {
+  top: 30px;
+  left: 14px;
+  width: 20px;
+  height: 3px;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+input[type="text"]:valid ~ .validation span:last-child,
+input[type="password"]:valid ~ .validation span:last-child {
+  top: 35px;
+  left: 8px;
+  width: 11px;
+  height: 3px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.validation {
+  display: none;
+  position: absolute;
+  content: " ";
+  height: 60px;
+  width: 30px;
+  right: 15px;
+  top: 0px;
+}
+
+input[type="submit"] {
+  border: none;
+  display: block;
+  background-color: var(--black-coral);
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  font-size: 18px;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+}
+
+input[type="submit"]:hover {
+  background-color: var(--maximum-bue);
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}

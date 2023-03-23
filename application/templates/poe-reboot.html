@@ -12,77 +12,89 @@ endblock title %} {% block content %}
           <option value="WH099">WH099</option>
         </select>
 
-        <select name="devices" id="devices">
-          
-        </select>
+        <select name="devices" id="devices"></select>
 
-        <input type="submit" value="reboot">
+        <input type="submit" id="submit-btn" value="reboot" />
       </form>
-    </div
+    </div>
   </div>
   <!-- processbar -->
   <div id="process_bar">
     <i class="process_bar_toggle">^</i>
     <table class="process_table">
       <tr class="process_item_title">
-        <th>id</th>
         <th>device</th>
         <th>status</th>
         <th>loading</th>
       </tr>
-      {% for reboot_process in reboot_process_list %}
       <tr class="process_item">
-        <td>1</td>
-        <td>host01</td>
-        <td>status</td>
+        <td><div id="tDeviceName">host01</div></td>
+        <td><div id="value-container"></div></td>
         <td class="process_progressbar"><div class="loader"></div></td>
       </tr>
-      {% endfor %}
     </table>
   </div>
 </div>
 {% endblock content %} {% block script %}
 <script src="{{ url_for('static', filename='poe-reboot.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
 
 <script>
-
   var array = [];
 
-  
-    "{% for device in devices %}"
-      array.push(["{{ device[0] }}, {{ device[1] }}"])
-    "{% endfor %}"
+  ("{% for device in devices %}");
+  array.push(["{{ device[0] }}, {{ device[1] }}"]);
+  ("{% endfor %}");
 
-    selectList = document.getElementById("devices");
+  selectList = document.getElementById("devices");
 
-
-    window.onload = function() {
-    
-      for (var i = 0; i < array.length; i++) {
-    
-      if(array[i][0].split(",")[1].includes(document.getElementById("location").value)) {
+  window.onload = function () {
+    for (var i = 0; i < array.length; i++) {
+      if (
+        array[i][0]
+          .split(",")[1]
+          .includes(document.getElementById("location").value)
+      ) {
         var option = document.createElement("option");
         option.value = array[i][0].split(",")[0];
         option.text = array[i][0].split(",")[0];
         selectList.appendChild(option);
       }
-  }   
     }
+  };
 
-    document.getElementById("location").onchange = function() {
-
+  document.getElementById("location").onchange = function () {
     document.getElementById("devices").innerHTML = "";
 
     for (var i = 0; i < array.length; i++) {
-    
-    if(array[i][0].split(",")[1].includes(document.getElementById("location").value)) {
-      var option = document.createElement("option");
-      option.value = array[i][0].split(",")[0];
-      option.text = array[i][0].split(",")[0];
-      selectList.appendChild(option);
+      if (
+        array[i][0]
+          .split(",")[1]
+          .includes(document.getElementById("location").value)
+      ) {
+        var option = document.createElement("option");
+        option.value = array[i][0].split(",")[0];
+        option.text = array[i][0].split(",")[0];
+        selectList.appendChild(option);
+      }
     }
-  }   
-    }
+  };
 
-  </script>
+  var socket = io.connect("http://" + document.domain + ":" + location.port);
+  socket.on("value", function (value, tDeviceName) {
+    var valueContainer = document.getElementById("value-container");
+    valueContainer.innerHTML = value;
+    console.log(value);
+  });
+
+  setInterval(function () {
+    socket.emit("request_value");
+  }, 1000);
+
+  setInterval(function () {
+    var valueContainer = document.getElementById("value-container");
+    valueContainer.outerHTML = valueContainer.outerHTML;
+  }, 1000);
+</script>
 {% endblock script %}

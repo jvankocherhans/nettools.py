@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='default-content-layout.css') }}"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='poe-reboot-layout.css') }}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   {% block title %}{% endblock %}
   </head>
   <body>
@@ -16,7 +17,7 @@
       <header>
         <div class="image-text">
           <span class="image">
-            <!--<img src="logo.png" alt="">-->
+            <img src="{{url_for('static', filename='nettools.py-logo.png')}}" alt=""/>
           </span>
 
           <div class="text logo-text">
@@ -34,14 +35,14 @@
           <ul class="menu-links">
             <li class="nav-link">
               <a href="{{ url_for('dashboard') }}">
-                <i class="icon"></i>
+                <i class="icon"><i class="fa fa-home" aria-hidden="true"></i></i>
                 <span class="text nav-text">dashboard</span>
               </a>
             </li>
 
             <li class="nav-link">
               <a href="{{ url_for('poeReboot') }}">
-                <i class="icon"></i>
+                <i class="icon"><i class="fa fa-refresh" aria-hidden="true"></i></i>
                 <span class="text nav-text">poe-reboot</span>
               </a>
             </li>
@@ -51,7 +52,7 @@
         <div class="bottom-content">
           <li class="">
             <a href="#">
-              <i class="icon"></i>
+              <i class="icon"><i class="fa fa-sign-out" aria-hidden="true"></i></i>
               <span class="text nav-text">Logout</span>
             </a>
           </li>

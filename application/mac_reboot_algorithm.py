@@ -18,6 +18,7 @@ class NetworkSwitch:
     # target attributes
     tSwitchIp = None
     tSwitchName = None
+    tDeviceName = None
     tPort = None
 
     def updateCiscoSwitch(self):
